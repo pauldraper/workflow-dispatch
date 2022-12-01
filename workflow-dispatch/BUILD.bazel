@@ -1,0 +1,73 @@
+load("@better_rules_javascript//commonjs:rules.bzl", "cjs_root")
+load("@better_rules_javascript//javascript:rules.bzl", "js_library")
+load("@better_rules_javascript//rollup:rules.bzl", "configure_rollup", "rollup_bundle")
+load("@better_rules_javascript//typescript:rules.bzl", "ts_library")
+load("@rules_file//generate:rules.bzl", "generate")
+load("//rules/javascript:rules.bzl", "js_gen")
+
+package(default_visibility = ["//visibility:public"])
+
+rollup_bundle(
+    name = "bundle",
+    dep = ":lib",
+    rollup = ":rollup",
+)
+
+generate(
+    name = "gen",
+    srcs = glob(["dist/**/*.js"]),
+    data = [":gen_bundle"],
+    data_prefix = "dist",
+    data_strip_prefix = "bundle",
+)
+
+js_gen(
+    name = "gen_bundle",
+    src = ":bundle",
+)
+
+ts_library(
+    name = "lib",
+    srcs = glob(["src/**/*.ts"]),
+    compiler = "@better_rules_javascript//rules:tsc",
+    config = "tsconfig.json",
+    config_dep = ":tsconfig",
+    root = ":root",
+    deps = [
+        "@npm//@actions/core:lib",
+        "@npm//@actions/github:lib",
+        "@npm//@js-joda/core:lib",
+        "@npm//@octokit/rest:lib",
+        "@npm//@types/node:lib",
+    ],
+)
+
+configure_rollup(
+    name = "rollup",
+    config = "rollup.config.js",
+    config_dep = ":rollup_config",
+    dep = "@npm//rollup:lib",
+)
+
+js_library(
+    name = "rollup_config",
+    srcs = ["rollup.config.js"],
+    root = ":root",
+    deps = [
+        "@npm//@rollup/plugin-commonjs:lib",
+        "@npm//@rollup/plugin-json:lib",
+        "@npm//@rollup/plugin-node-resolve:lib",
+    ],
+)
+
+cjs_root(
+    name = "root",
+    package_name = "@pauldraper/workflow-dispatch",
+)
+
+js_library(
+    name = "tsconfig",
+    srcs = ["tsconfig.json"],
+    root = ":root",
+    deps = ["//tools/typescript:tsconfig"],
+)

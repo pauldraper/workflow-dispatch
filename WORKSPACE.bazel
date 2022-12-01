@@ -1,0 +1,189 @@
+workspace(name = "gh_workflow_dispatch")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# Skylib
+
+SKYLIB_VERSION = "16de038c484145363340eeaf0e97a0c9889a931b"
+
+http_archive(
+    name = "bazel_skylib",
+    sha256 = "96e0cd3f731f0caef9e9919aa119ecc6dace36b149c2f47e40aa50587790402b",
+    strip_prefix = "bazel-skylib-%s" % SKYLIB_VERSION,
+    url = "https://github.com/bazelbuild/bazel-skylib/archive/%s.tar.gz" % SKYLIB_VERSION,
+)
+
+# Python
+
+PYTHON_VERSION = "ad0b8f8c80516e49f3871164da7aba927b222133"
+
+http_archive(
+    name = "rules_python",
+    sha256 = "d8bdaa73ec01534c298f4d0cd8e5d3203d2be53687aee9dbab2e1cd497c3cc2d",
+    strip_prefix = "rules_python-%s" % PYTHON_VERSION,
+    url = "https://github.com/bazelbuild/rules_python/archive/%s.zip" % PYTHON_VERSION,
+)
+
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+python_register_toolchains(
+    name = "python3_10",
+    python_version = "3.10",
+)
+
+# Go
+
+GO_VERSION = "0.34.0"
+
+http_archive(
+    name = "io_bazel_rules_go",
+    sha256 = "9c44b54c51ca9aafb73e9dd9e71514cde7679b6cd165bf33abde847504a778ba",
+    strip_prefix = "rules_go-%s" % GO_VERSION,
+    url = "https://github.com/bazelbuild/rules_go/archive/v%s.zip" % GO_VERSION,
+)
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains(version = "1.17.2")
+
+# Gazelle
+
+http_archive(
+    name = "bazel_gazelle",
+    sha256 = "501deb3d5695ab658e82f6f6f549ba681ea3ca2a5fb7911154b5aa45596183fa",
+    urls = [
+        "https://storage.googleapis.com/bazel-mirror/github.com/bazelbuild/bazel-gazelle/releases/download/v0.26.0/bazel-gazelle-v0.26.0.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.26.0/bazel-gazelle-v0.26.0.tar.gz",
+    ],
+)
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
+gazelle_dependencies(go_repository_default_config = "@//:WORKSPACE.bazel")
+
+# Javascript
+
+JAVASCRIPT_VERSION = "f467ebfec0a8705f8e80e752483ef4abd4c459aa"
+
+http_archive(
+    name = "better_rules_javascript",
+    sha256 = "0d74720298e0c27828f6082b836c25f48c4cb9d89c8aab149757c926c29ac02c",
+    strip_prefix = "rules_javascript-%s" % JAVASCRIPT_VERSION,
+    url = "https://github.com/hello-seer/rules_javascript/archive/%s.tar.gz" % JAVASCRIPT_VERSION,
+)
+
+load("@better_rules_javascript//rules:workspace.bzl", javascript_repositories = "repositories")
+
+# https://github.com/Automattic/node-canvas/issues/2025
+javascript_repositories(version = "17.9.1")
+
+# Pkg
+
+PKG_VERSION = "8e65d2f3ceaad684bf5aa85b80b9f100d63dc9c2"
+
+http_archive(
+    name = "rules_pkg",
+    sha256 = "be3f1298b0a49d2836aea56822098257e72f514819e8c56979134b8cdba18ca9",
+    strip_prefix = "rules_pkg-%s" % PKG_VERSION,
+    url = "https://github.com/bazelbuild/rules_pkg/archive/%s.zip" % PKG_VERSION,
+)
+
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
+rules_pkg_dependencies()
+
+# Protobuf
+
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568",
+    strip_prefix = "protobuf-3.19.4",
+    url = "https://github.com/protocolbuffers/protobuf/archive/v3.19.4.tar.gz",
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+# Files
+
+FILE_VERSION = "5411fc1cf9eaa3889bcfafcc773cca66fffe9ea9"
+
+http_archive(
+    name = "rules_file",
+    sha256 = "58947770df93aed2614b7b9ac8e55913ee4208b4b184d60fec436bc9cf8d0135",
+    strip_prefix = "rules_file-%s" % FILE_VERSION,
+    url = "https://github.com/hello-seer/rules_file/archive/%s.zip" % FILE_VERSION,
+)
+
+load("@rules_file//rules:init.bzl", "file_init")
+
+file_init()
+
+load("@rules_file//rules:workspace.bzl", "file_repositories")
+
+file_repositories()
+
+load("@rules_file//file:workspace.bzl", "files")
+
+files(
+    name = "files",
+    build = "//tools/file:files.bazel",
+    ignores = [
+        "infra/.terraform",
+        "infra/cdk.out",
+        "node_modules",
+        "web/chrome-extension/src/assets",
+    ],
+    root_file = "//:WORKSPACE.bazel",
+)
+
+# Buildifier
+
+http_archive(
+    name = "com_github_bazelbuild_buildtools",
+    sha256 = "ae34c344514e08c23e90da0e2d6cb700fcd28e80c02e23e4d5715dddcb42f7b3",
+    strip_prefix = "buildtools-4.2.2",
+    url = "https://github.com/bazelbuild/buildtools/archive/refs/tags/4.2.2.tar.gz",
+)
+
+# Docker
+
+DOCKER_VERSION = "c823a69236c336f3d9478afb8f237dcf0fba1ea4"
+
+http_archive(
+    name = "io_bazel_rules_docker",
+    sha256 = "884e5b6f2a3570f2441478a5d9254c6b4f4656db7ce243a40030a629caf44240",
+    strip_prefix = "rules_docker-%s" % DOCKER_VERSION,
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/%s.zip" % DOCKER_VERSION],
+)
+
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+
+container_repositories()
+
+load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
+
+container_deps()
+
+# Rivet Bazel Util
+
+RIVET_BAZEL_UTIL_VERSION = "f0c1bbe0935c3994e4c1ea4b3370a47d8df9819e"
+
+http_archive(
+    name = "rivet_bazel_util",
+    sha256 = "fca24b50c6544c0c2146bca6de7b00558c276020e64692b770361d650ed97b6e",
+    strip_prefix = "rivet-bazel-util-%s" % RIVET_BAZEL_UTIL_VERSION,
+    url = "https://github.com/rivethealth/rivet-bazel-util/archive/%s.tar.gz" % RIVET_BAZEL_UTIL_VERSION,
+)
+
+# @
+
+load("//tools/javascript:workspace.bzl", "npm_repositories")
+
+npm_repositories()

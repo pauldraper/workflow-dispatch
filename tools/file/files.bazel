@@ -1,0 +1,16 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "buildifier_files",
+    srcs = glob(["files/**/*.bazel", "files/**/*.bzl"]),
+)
+
+filegroup(
+    name = "eslint_files",
+    srcs = glob(["files/**/*.js"]),
+)
+
+filegroup(
+    name = "prettier_files",
+    srcs = glob(["files/**/*.md", "files/**/.*.js", "files/**/*.js", "files/**/*.json", "files/**/*.ts", "files/**/*.yml"]),
+)

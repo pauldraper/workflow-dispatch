@@ -1,0 +1,37 @@
+load("@better_rules_javascript//nodejs:rules.bzl", "nodejs_binary", "nodejs_install", "nodejs_modules_archive")
+load("@better_rules_javascript//npm:rules.bzl", "yarn_resolve")
+load(":npm.bzl", "ROOTS")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "nodejs",
+    actual = "@better_rules_javascript//rules:nodejs",
+)
+
+nodejs_binary(
+    name = "pino_pretty",
+    dep = "@npm//pino-pretty:lib",
+    main = "bin.js",
+    node = ":nodejs",
+)
+
+yarn_resolve(
+    name = "resolve",
+    output = "npm.bzl",
+    path = "/",
+)
+
+nodejs_modules_archive(
+    name = "nodejs_modules",
+    links = [
+        "//tools/typescript:root",
+    ],
+    tags = ["no-cache"],
+    deps = ["@npm//%s:lib" % dep["name"] for dep in ROOTS],
+)
+
+nodejs_install(
+    name = "install",
+    archive = ":nodejs_modules",
+)

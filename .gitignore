@@ -1,0 +1,7 @@
+.bazel-npm-cache.json
+.DS_Store
+.yarn
+node_modules
+
+/bazel-*
+/user.bazelrc

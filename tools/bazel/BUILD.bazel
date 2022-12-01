@@ -1,0 +1,9 @@
+load("@rules_file//file:rules.bzl", "bazelrc_deleted_packages")
+
+package(default_visibility = ["//visibility:public"])
+
+bazelrc_deleted_packages(
+    name = "gen_bazelrc",
+    output = "deleted.bazelrc",
+    packages = ["@files//:packages"],
+)

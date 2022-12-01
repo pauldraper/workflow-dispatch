@@ -1,0 +1,34 @@
+description: Create Workflow Dispatch
+name: Workflow Dispatch Plus
+inputs:
+  repo:
+    description: Repository name
+    required: true
+  owner:
+    description: Owner name
+    required: true
+  token:
+    description:
+      Personal access token, see
+      https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+    required: true
+  workflow:
+    description: Workflow file path
+  ref:
+    description: Ref
+    required: true
+  inputs:
+    description: JSON object of inputs
+    default: "{}"
+  upstream-input-name:
+    description: Name of upstream input
+  wait:
+    description: Whether to wait for
+outputs:
+  conclusion:
+    description: Conclusion of workflow run
+  run_id:
+    description: Workflow run ID
+runs:
+  using: node16
+  main: workflow-dispatch/dist/index.js

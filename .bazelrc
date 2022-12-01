@@ -1,0 +1,19 @@
+# Files
+import %workspace%/tools/bazel/deleted.bazelrc
+
+# Cache
+build --disk_cache ~/.cache/bazel-disk
+clean --disk_cache ~/.cache/bazel-disk
+fetch --disk_cache ~/.cache/bazel-disk
+info --disk_cache ~/.cache/bazel-disk
+query --disk_cache ~/.cache/bazel-disk
+sync --disk_cache ~/.cache/bazel-disk
+
+# Build
+build -k
+
+# Run
+build --run_under='cd "$BUILD_WORKING_DIRECTORY" && exec'
+
+# User settings
+try-import %workspace%/user.bazelrc

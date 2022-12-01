@@ -1,0 +1,37 @@
+load("@better_rules_javascript//commonjs:rules.bzl", "cjs_root")
+load("@better_rules_javascript//javascript:rules.bzl", "js_library")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "gen_bazelrc",
+    actual = "//tools/bazel:gen_bazelrc",
+)
+
+alias(
+    name = "lint",
+    actual = "//tools/lint",
+)
+
+alias(
+    name = "format",
+    actual = "//tools/lint:format",
+)
+
+# TODO: remove once better_rules_javascript makes this unnecessary
+cjs_root(
+    name = "root",
+    package_name = "@helloseer/seer",
+)
+
+js_library(
+    name = "eslint_config",
+    srcs = [".eslintrc.js"],
+    root = ":root",
+)
+
+js_library(
+    name = "prettier_config",
+    srcs = [".prettierrc.yml"],
+    root = ":root",
+)

@@ -1,0 +1,3 @@
+{
+  "extends": "@pauldraper/workflow-dispatch-typescript/tsconfig.common.json"
+}

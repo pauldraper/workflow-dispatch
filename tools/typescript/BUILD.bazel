@@ -1,0 +1,16 @@
+load("@better_rules_javascript//commonjs:rules.bzl", "cjs_root")
+load("@better_rules_javascript//javascript:rules.bzl", "js_library")
+
+package(default_visibility = ["//visibility:public"])
+
+js_library(
+    name = "tsconfig",
+    srcs = ["tsconfig.common.json"],
+    root = ":root",
+)
+
+cjs_root(
+    name = "root",
+    package_name = "@pauldraper/workflow-dispatch-typescript",
+    descriptors = ["package.json"],
+)

@@ -1,0 +1,7 @@
+load("@rules_file//buildifier:rules.bzl", "buildifier")
+
+package(default_visibility = ["//visibility:public"])
+
+buildifier(
+    name = "buildifier",
+)

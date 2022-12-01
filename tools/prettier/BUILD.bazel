@@ -1,0 +1,11 @@
+load("@better_rules_javascript//prettier:rules.bzl", "configure_prettier")
+
+package(default_visibility = ["//visibility:public"])
+
+configure_prettier(
+    name = "prettier",
+    config = ".prettierrc.yml",
+    config_dep = "//:prettier_config",
+    dep = "@npm//prettier:lib",
+    plugins = ["@npm//prettier-plugin-organize-imports:lib"],
+)

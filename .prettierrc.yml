@@ -1,0 +1,2 @@
+plugins: [prettier-plugin-organize-imports]
+proseWrap: always
