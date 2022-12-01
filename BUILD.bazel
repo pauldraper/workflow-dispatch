@@ -4,6 +4,11 @@ load("@better_rules_javascript//javascript:rules.bzl", "js_library")
 package(default_visibility = ["//visibility:public"])
 
 alias(
+    name = "gen",
+    actual = "//workflow-dispatch:gen"
+)
+
+alias(
     name = "gen_bazelrc",
     actual = "//tools/bazel:gen_bazelrc",
 )
