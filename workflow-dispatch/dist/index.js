@@ -29709,6 +29709,16 @@ const Octokit = Octokit$1.plugin(requestLog, legacyRestEndpointMethods, paginate
 const extraGithubContext = {
     runAttempt: +process.env.GITHUB_RUN_ATTEMPT,
 };
+function getBooleanInput(name) {
+    const text = coreExports.getInput(name);
+    switch (text) {
+        case "false":
+            return false;
+        case "true":
+            return true;
+    }
+    coreExports.setFailed(`Invalid boolean for ${name}`);
+}
 function getJsonInput(name) {
     const text = coreExports.getInput(name);
     try {
@@ -29733,96 +29743,183 @@ function currentUrl() {
     return workflowRunAttemptUrl(context.serverUrl, context.repo.owner, context.repo.repo, context.runId, extraGithubContext.runAttempt);
 }
 
+const CLOCK_DRIFT = Duration.ofMinutes(1);
+class NextRunFinder {
+    constructor(octokit, params, created, prevRunNumber) {
+        this.octokit = octokit;
+        this.params = params;
+        this.created = created;
+        this.prevRunNumber = prevRunNumber;
+    }
+    async find() {
+        const minCreated = this.created
+            .minus(CLOCK_DRIFT)
+            .truncatedTo(ChronoUnit.SECONDS);
+        const maxCreated = this.created
+            .plus(CLOCK_DRIFT)
+            .truncatedTo(ChronoUnit.SECONDS);
+        for (let i = 0; i < 30; i++) {
+            const response = await this.octokit.actions.listWorkflowRuns({
+                created: `${minCreated}...${maxCreated}`,
+                event: "workflow_dispatch",
+                owner: this.params.owner,
+                ref: this.params.ref,
+                repo: this.params.repo,
+                per_page: this.prevRunNumber !== undefined ? 100 : 1,
+                workflow_id: this.params.workflowId,
+            });
+            for (const workflowRun of response.data.workflow_runs) {
+                if (this.prevRunNumber === undefined ||
+                    this.prevRunNumber < workflowRun.run_number) {
+                    return workflowRun.id;
+                }
+            }
+            await new Promise((resolve) => setTimeout(resolve, Duration.ofSeconds(1).toMillis()));
+        }
+    }
+}
+class NextRunDispatcher {
+    constructor(octokit) {
+        this.octokit = octokit;
+    }
+    async start(params) {
+        const created = Instant.now();
+        const response = await this.octokit.actions.listWorkflowRuns({
+            owner: params.owner,
+            ref: params.ref,
+            repo: params.repo,
+            per_page: 1,
+            workflow_id: params.workflowId,
+        });
+        const workflowRun = response.data.workflow_runs[0];
+        const prevRunNumber = workflowRun?.run_number;
+        await this.octokit.actions.createWorkflowDispatch({
+            owner: params.owner,
+            repo: params.repo,
+            workflow_id: params.workflowId,
+            ref: params.ref,
+            inputs: params.inputs,
+        });
+        return new NextRunFinder(this.octokit, params, created, prevRunNumber);
+    }
+}
+class MarkerRunFinder {
+    constructor(octokit, stepName, params, created) {
+        this.octokit = octokit;
+        this.stepName = stepName;
+        this.params = params;
+        this.created = created;
+    }
+    async find() {
+        const minCreated = this.created
+            .minus(CLOCK_DRIFT)
+            .truncatedTo(ChronoUnit.SECONDS);
+        const maxCreated = this.created
+            .plus(CLOCK_DRIFT)
+            .truncatedTo(ChronoUnit.SECONDS);
+        for (let i = 0; i < 30; i++) {
+            const response = await this.octokit.actions.listWorkflowRuns({
+                created: `${minCreated}...${maxCreated}`,
+                event: "workflow_dispatch",
+                owner: this.params.owner,
+                ref: this.params.ref,
+                repo: this.params.repo,
+                workflow_id: this.params.workflowId,
+            });
+            for (const workflowRun of response.data.workflow_runs) {
+                const response = await this.octokit.actions.listJobsForWorkflowRun({
+                    owner: this.params.owner,
+                    repo: this.params.repo,
+                    run_id: workflowRun.id,
+                });
+                for (const job of response.data.jobs) {
+                    const response = await this.octokit.actions.getJobForWorkflowRun({
+                        owner: this.params.owner,
+                        repo: this.params.repo,
+                        run_id: workflowRun.id,
+                        job_id: job.id,
+                    });
+                    if (!response.data.steps) {
+                        continue;
+                    }
+                    for (const step of response.data.steps) {
+                        if (step.name === this.stepName) {
+                            return workflowRun.id;
+                        }
+                    }
+                }
+            }
+            await new Promise((resolve) => setTimeout(resolve, Duration.ofSeconds(1).toMillis()));
+        }
+    }
+}
+class MarkerRunDispatcher {
+    constructor(octokit, inputName, stepName) {
+        this.octokit = octokit;
+        this.inputName = inputName;
+        this.stepName = stepName;
+    }
+    async start(params) {
+        const created = Instant.now();
+        await this.octokit.actions.createWorkflowDispatch({
+            owner: params.owner,
+            repo: params.repo,
+            workflow_id: params.workflowId,
+            ref: params.ref,
+            inputs: { ...params.inputs, [this.inputName]: this.stepName },
+        });
+        return new MarkerRunFinder(this.octokit, this.stepName, params, created);
+    }
+}
+
 class ActionError extends Error {
 }
-const clockDrift = Duration.ofMinutes(1);
 async function main() {
+    const inputs = getJsonInput("inputs");
+    const markerInput = coreExports.getInput("marker-input");
     const owner = coreExports.getInput("owner") || context.repo.owner;
+    const ref = coreExports.getInput("ref") || context.ref;
     const repo = coreExports.getInput("repo") || context.repo.repo;
     const token = coreExports.getInput("token", { required: true });
+    const wait = getBooleanInput("wait");
     const workflow = coreExports.getInput("workflow", { required: true });
-    const ref = coreExports.getInput("ref") || context.ref;
-    const inputs = getJsonInput("inputs");
-    const upstreamInputName = coreExports.getInput("upstream-input-name");
-    const wait = coreExports.getInput("wait");
-    const upstreamUrl = currentUrl();
-    if (upstreamInputName) {
-        inputs[upstreamInputName] = upstreamUrl;
-    }
     const octokit = new Octokit({ auth: token });
-    const created = Instant.now();
-    await octokit.actions.createWorkflowDispatch({
+    let dispatcher;
+    if (markerInput) {
+        dispatcher = new MarkerRunDispatcher(octokit, markerInput, currentUrl());
+    }
+    else {
+        dispatcher = new NextRunDispatcher(octokit);
+    }
+    const runFinder = await dispatcher.start({
         owner,
         repo,
-        workflow_id: workflow,
+        workflowId: workflow,
         ref,
         inputs,
     });
     coreExports.info("Created workflow dispatch");
-    if (upstreamInputName) {
-        const runId = await findWorkflowRunFromMarkerStep(octokit, owner, repo, workflow, ref, upstreamUrl, created);
-        if (runId === undefined) {
-            coreExports.info("Could not find created workflow run");
-            coreExports.error("Could not find workflow run", { title: "Workflow Dispatch" });
-            return;
-        }
-        const downstreamUrl = workflowRunUrl(context.serverUrl, owner, repo, runId);
-        coreExports.info(`Created workflow run ${downstreamUrl}`);
-        coreExports.summary
-            .addRaw(`Created workflow run [${downstreamUrl}](${downstreamUrl})`)
-            .addEOL();
-        coreExports.setOutput("run_id", runId);
+    const runId = await runFinder.find();
+    if (runId === undefined) {
+        coreExports.info("Could not find created workflow run");
         if (wait) {
-            const conclusion = await waitWorkflowRun(octokit, owner, repo, runId);
-            coreExports.setOutput("conclusion", conclusion);
-            coreExports.info(`Conclusion: ${conclusion}`);
+            coreExports.setFailed("Could not find workflow run");
         }
-    }
-}
-main().catch((e) => {
-    if (e instanceof ActionError) {
-        coreExports.setFailed(e.message);
-    }
-    else {
-        console.error(e.stack);
-        process.exitCode = 1;
-    }
-});
-async function findWorkflowRunFromMarkerStep(octokit, owner, repo, workflow, ref, upstreamUrl, created) {
-    const minCreated = created.minus(clockDrift).truncatedTo(ChronoUnit.SECONDS);
-    const maxCreated = created.plus(clockDrift).truncatedTo(ChronoUnit.SECONDS);
-    for (let i = 0; i < 20; i++) {
-        const response = await octokit.actions.listWorkflowRuns({
-            owner,
-            repo,
-            workflow_id: workflow,
-            ref,
-            created: `${minCreated}...${maxCreated}`,
-        });
-        for (const workflowRun of response.data.workflow_runs) {
-            const response = await octokit.actions.listJobsForWorkflowRun({
-                owner,
-                repo,
-                run_id: workflowRun.id,
-            });
-            for (const job of response.data.jobs) {
-                const response = await octokit.actions.getJobForWorkflowRun({
-                    owner,
-                    repo,
-                    run_id: workflowRun.id,
-                    job_id: job.id,
-                });
-                if (!response.data.steps) {
-                    continue;
-                }
-                for (const step of response.data.steps) {
-                    if (step.name === upstreamUrl) {
-                        return workflowRun.id;
-                    }
-                }
-            }
+        else {
+            coreExports.warning("Could not find workflow run", { title: "Workflow Dispatch" });
         }
-        await new Promise((resolve) => setTimeout(resolve, Duration.ofSeconds(1).toMillis()));
+        return;
+    }
+    const downstreamUrl = workflowRunUrl(context.serverUrl, owner, repo, runId);
+    coreExports.info(`Created workflow run ${downstreamUrl}`);
+    coreExports.summary
+        .addRaw(`Created workflow run [${downstreamUrl}](${downstreamUrl})`)
+        .addEOL();
+    coreExports.setOutput("run_id", runId);
+    if (wait) {
+        const conclusion = await waitWorkflowRun(octokit, owner, repo, runId);
+        coreExports.setOutput("conclusion", conclusion);
+        coreExports.info(`Conclusion: ${conclusion}`);
     }
 }
 async function waitWorkflowRun(octokit, owner, repo, runId) {
@@ -29838,3 +29935,12 @@ async function waitWorkflowRun(octokit, owner, repo, runId) {
         await new Promise((resolve) => setTimeout(resolve, Duration.ofSeconds(10).toMillis()));
     }
 }
+main().catch((e) => {
+    if (e instanceof ActionError) {
+        coreExports.setFailed(e.message);
+    }
+    else {
+        console.error(e.stack);
+    }
+    process.exitCode = 1;
+});
