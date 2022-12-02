@@ -65,11 +65,11 @@ gazelle_dependencies(go_repository_default_config = "@//:WORKSPACE.bazel")
 
 # Javascript
 
-JAVASCRIPT_VERSION = "f467ebfec0a8705f8e80e752483ef4abd4c459aa"
+JAVASCRIPT_VERSION = "64f6da098abe8512aaee105b0cb43119289307aa"
 
 http_archive(
     name = "better_rules_javascript",
-    sha256 = "0d74720298e0c27828f6082b836c25f48c4cb9d89c8aab149757c926c29ac02c",
+    sha256 = "aabb113c72cca3821e0a56b55e8a0408c08610920d4369581bc2cfafe2fb82cf",
     strip_prefix = "rules_javascript-%s" % JAVASCRIPT_VERSION,
     url = "https://github.com/hello-seer/rules_javascript/archive/%s.tar.gz" % JAVASCRIPT_VERSION,
 )

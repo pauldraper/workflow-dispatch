@@ -398,7 +398,8 @@ PACKAGES = {
                 "id": "is-plain-object@5.0.0",
             },
             {
-                "id": "node-fetch@2.6.7-25a5f538",
+                "id": "node-fetch-commonjs@3.2.4",
+                "name": "node-fetch",
             },
             {
                 "id": "universal-user-agent@6.0.0",
@@ -425,7 +426,8 @@ PACKAGES = {
                 "id": "is-plain-object@5.0.0",
             },
             {
-                "id": "node-fetch@2.6.7-25a5f538",
+                "id": "node-fetch-commonjs@3.2.4",
+                "name": "node-fetch",
             },
             {
                 "id": "universal-user-agent@6.0.0",
@@ -967,6 +969,33 @@ PACKAGES = {
         "integrity": "sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==",
         "name": "estree-walker",
         "url": "https://registry.npmjs.org/estree-walker/-/estree-walker-2.0.2.tgz",
+    },
+    "fetch-blob@3.2.0": {
+        "deps": [
+            {
+                "id": "node-domexception@1.0.0",
+            },
+            {
+                "id": "web-streams-polyfill@3.2.1",
+            },
+        ],
+        "extra_deps": {
+        },
+        "integrity": "sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==",
+        "name": "fetch-blob",
+        "url": "https://registry.npmjs.org/fetch-blob/-/fetch-blob-3.2.0.tgz",
+    },
+    "formdata-polyfill@4.0.10": {
+        "deps": [
+            {
+                "id": "fetch-blob@3.2.0",
+            },
+        ],
+        "extra_deps": {
+        },
+        "integrity": "sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==",
+        "name": "formdata-polyfill",
+        "url": "https://registry.npmjs.org/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz",
     },
     "fs-minipass@2.1.0": {
         "deps": [
@@ -1577,17 +1606,32 @@ PACKAGES = {
         "name": "negotiator",
         "url": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz",
     },
-    "node-fetch@2.6.7-25a5f538": {
+    "node-domexception@1.0.0": {
+        "deps": [
+        ],
+        "extra_deps": {
+        },
+        "integrity": "sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==",
+        "name": "node-domexception",
+        "url": "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz",
+    },
+    "node-fetch-commonjs@3.2.4": {
         "deps": [
             {
-                "id": "whatwg-url@5.0.0",
+                "id": "formdata-polyfill@4.0.10",
+            },
+            {
+                "id": "node-domexception@1.0.0",
+            },
+            {
+                "id": "web-streams-polyfill@3.2.1",
             },
         ],
         "extra_deps": {
         },
-        "integrity": "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==",
-        "name": "node-fetch",
-        "url": "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz",
+        "integrity": "sha512-bZW7+ldcuuMPLTJk8DufhT6qHDRdljYD0jqBjmrYfcInaYcReX5kK42SQsu/jvtit/tER28yYjnk63PEEmNPtg==",
+        "name": "node-fetch-commonjs",
+        "url": "https://registry.npmjs.org/node-fetch-commonjs/-/node-fetch-commonjs-3.2.4.tgz",
     },
     "node-gyp@9.3.0": {
         "deps": [
@@ -2018,15 +2062,6 @@ PACKAGES = {
         "name": "tar",
         "url": "https://registry.npmjs.org/tar/-/tar-6.1.12.tgz",
     },
-    "tr46@0.0.3": {
-        "deps": [
-        ],
-        "extra_deps": {
-        },
-        "integrity": "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==",
-        "name": "tr46",
-        "url": "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz",
-    },
     "tunnel@0.0.6": {
         "deps": [
         ],
@@ -2096,29 +2131,14 @@ PACKAGES = {
         "name": "uuid",
         "url": "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz",
     },
-    "webidl-conversions@3.0.1": {
+    "web-streams-polyfill@3.2.1": {
         "deps": [
         ],
         "extra_deps": {
         },
-        "integrity": "sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==",
-        "name": "webidl-conversions",
-        "url": "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz",
-    },
-    "whatwg-url@5.0.0": {
-        "deps": [
-            {
-                "id": "tr46@0.0.3",
-            },
-            {
-                "id": "webidl-conversions@3.0.1",
-            },
-        ],
-        "extra_deps": {
-        },
-        "integrity": "sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==",
-        "name": "whatwg-url",
-        "url": "https://registry.npmjs.org/whatwg-url/-/whatwg-url-5.0.0.tgz",
+        "integrity": "sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==",
+        "name": "web-streams-polyfill",
+        "url": "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz",
     },
     "which@2.0.2": {
         "deps": [

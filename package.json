@@ -12,5 +12,8 @@
     "prettier-plugin-organize-imports": "^3.0.0",
     "rollup": "^3.0.0",
     "typescript": "^4.0.0"
+  },
+  "resolutions": {
+    "node-fetch": "npm:node-fetch-commonjs@^3.0.0"
   }
 }

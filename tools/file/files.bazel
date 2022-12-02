@@ -12,5 +12,8 @@ filegroup(
 
 filegroup(
     name = "prettier_files",
-    srcs = glob(["files/**/*.md", "files/**/.*.js", "files/**/*.js", "files/**/*.json", "files/**/*.ts", "files/**/*.yml"]),
+    srcs = glob(
+        ["files/**/*.md", "files/**/.*.js", "files/**/*.js", "files/**/*.json", "files/**/*.ts", "files/**/*.yml"],
+        ["files/**/dist/**/*"],
+    ),
 )
