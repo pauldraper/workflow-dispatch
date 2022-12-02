@@ -20,6 +20,7 @@ inputs:
   upstream-input-name:
     description: Name of upstream input
   wait:
+    default: "false"
     description: Whether to wait for
 outputs:
   conclusion:

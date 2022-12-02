@@ -29744,7 +29744,7 @@ async function main() {
     const ref = coreExports.getInput("ref") || context.ref;
     const inputs = getJsonInput("inputs");
     const upstreamInputName = coreExports.getInput("upstream-input-name");
-    const wait = coreExports.getBooleanInput("wait");
+    const wait = coreExports.getInput("wait");
     const upstreamUrl = currentUrl();
     if (upstreamInputName) {
         inputs[upstreamInputName] = upstreamUrl;

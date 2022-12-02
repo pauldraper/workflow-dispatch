@@ -1,6 +1,5 @@
 import {
   error,
-  getBooleanInput,
   getInput,
   info,
   setFailed,
@@ -24,7 +23,7 @@ async function main() {
   const ref = getInput("ref") || context.ref;
   const inputs = getJsonInput("inputs");
   const upstreamInputName = getInput("upstream-input-name");
-  const wait = getBooleanInput("wait");
+  const wait = getInput("wait");
 
   const upstreamUrl = currentUrl();
   if (upstreamInputName) {

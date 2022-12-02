@@ -5,6 +5,17 @@ export const extraGithubContext = {
   runAttempt: +process.env.GITHUB_RUN_ATTEMPT!,
 };
 
+export function getBooleanInput(name: string) {
+  const text = getInput(name);
+  switch (text) {
+    case "false":
+      return false;
+    case "true":
+      return true;
+  }
+  setFailed(`Invalid boolean for ${name}`);
+}
+
 export function getJsonInput(name: string) {
   const text = getInput(name);
   try {
