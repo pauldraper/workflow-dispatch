@@ -52,11 +52,10 @@ async function main() {
   info("Created workflow dispatch");
   const runId = await runFinder.find();
   if (runId === undefined) {
-    info("Could not find created workflow run");
     if (wait) {
       setFailed("Could not find workflow run");
     } else {
-      warning("Could not find workflow run", { title: "Workflow Dispatch" });
+      warning("Could not find workflow run");
     }
     return;
   }

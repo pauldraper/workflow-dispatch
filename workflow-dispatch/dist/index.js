@@ -29760,7 +29760,7 @@ class NextRunFinder {
             .truncatedTo(ChronoUnit.SECONDS);
         for (let i = 0; i < 30; i++) {
             const response = await this.octokit.actions.listWorkflowRuns({
-                created: `${minCreated}...${maxCreated}`,
+                created: `${minCreated}..${maxCreated}`,
                 event: "workflow_dispatch",
                 owner: this.params.owner,
                 ref: this.params.ref,
@@ -29819,7 +29819,7 @@ class MarkerRunFinder {
             .truncatedTo(ChronoUnit.SECONDS);
         for (let i = 0; i < 30; i++) {
             const response = await this.octokit.actions.listWorkflowRuns({
-                created: `${minCreated}...${maxCreated}`,
+                created: `${minCreated}..${maxCreated}`,
                 event: "workflow_dispatch",
                 owner: this.params.owner,
                 ref: this.params.ref,
@@ -29901,12 +29901,11 @@ async function main() {
     coreExports.info("Created workflow dispatch");
     const runId = await runFinder.find();
     if (runId === undefined) {
-        coreExports.info("Could not find created workflow run");
         if (wait) {
             coreExports.setFailed("Could not find workflow run");
         }
         else {
-            coreExports.warning("Could not find workflow run", { title: "Workflow Dispatch" });
+            coreExports.warning("Could not find workflow run");
         }
         return;
     }

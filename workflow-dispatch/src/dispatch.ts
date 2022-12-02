@@ -38,7 +38,7 @@ class NextRunFinder implements RunFinder {
       .truncatedTo(ChronoUnit.SECONDS);
     for (let i = 0; i < 30; i++) {
       const response = await this.octokit.actions.listWorkflowRuns({
-        created: `${minCreated}...${maxCreated}`,
+        created: `${minCreated}..${maxCreated}`,
         event: "workflow_dispatch",
         owner: this.params.owner,
         ref: this.params.ref,
@@ -104,7 +104,7 @@ class MarkerRunFinder implements RunFinder {
       .truncatedTo(ChronoUnit.SECONDS);
     for (let i = 0; i < 30; i++) {
       const response = await this.octokit.actions.listWorkflowRuns({
-        created: `${minCreated}...${maxCreated}`,
+        created: `${minCreated}..${maxCreated}`,
         event: "workflow_dispatch",
         owner: this.params.owner,
         ref: this.params.ref,
