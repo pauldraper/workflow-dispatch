@@ -21,7 +21,7 @@ async function main() {
   const repo = getInput("repo") || context.repo.repo;
   const token = getInput("token", { required: true });
   const workflow = getInput("workflow", { required: true });
-  const ref = getInput("ref", { required: true });
+  const ref = getInput("ref") || context.ref;
   const inputs = getJsonInput("inputs");
   const upstreamInputName = getInput("upstream-input-name");
   const wait = getBooleanInput("wait");

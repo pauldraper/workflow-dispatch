@@ -3,10 +3,8 @@ name: Workflow Dispatch Plus
 inputs:
   repo:
     description: Repository name
-    required: true
   owner:
     description: Owner name
-    required: true
   token:
     description:
       Personal access token, see
@@ -16,7 +14,6 @@ inputs:
     description: Workflow file path
   ref:
     description: Ref
-    required: true
   inputs:
     description: JSON object of inputs
     default: "{}"

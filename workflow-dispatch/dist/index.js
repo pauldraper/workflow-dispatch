@@ -29741,7 +29741,7 @@ async function main() {
     const repo = coreExports.getInput("repo") || context.repo.repo;
     const token = coreExports.getInput("token", { required: true });
     const workflow = coreExports.getInput("workflow", { required: true });
-    const ref = coreExports.getInput("ref", { required: true });
+    const ref = coreExports.getInput("ref") || context.ref;
     const inputs = getJsonInput("inputs");
     const upstreamInputName = coreExports.getInput("upstream-input-name");
     const wait = coreExports.getBooleanInput("wait");
