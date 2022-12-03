@@ -12,7 +12,7 @@ Trigger Github Action workflows, and optionally wait for the result.
 job:
   example:
     steps:
-      - use: pauldraper/workflow-dispatch@v1
+      - use: pauldraper/workflow-dispatch@v1.1
         with:
           inputs: '{"color": "blue"}'
           owner: example # defaults to current owner
@@ -43,7 +43,7 @@ downstream run.
 job:
   example:
     steps:
-      - use: pauldraper/workflow-dispatch@v1
+      - use: pauldraper/workflow-dispatch@v1.1
         with:
           marker-input: upstream-url
           token: "${{ secrets.GH_TOKEN }}"
