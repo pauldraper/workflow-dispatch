@@ -1,6 +1,7 @@
 # Workflow Dispatch Plus
 
-Trigger Github Action workflows, and optionally wait for the result.
+Trigger other Github Action workflows, display a link to the run, and optionally
+wait for the result.
 
 ## Usage
 
