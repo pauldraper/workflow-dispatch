@@ -23,7 +23,10 @@ job:
 **downstream.yml**
 
 ```yml
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      color:
 ```
 
 ### Different repository, and wait for finish
@@ -36,7 +39,6 @@ job:
     steps:
       - use: pauldraper/workflow-dispatch@v1.4
         with:
-          inputs: '{"color": "blue"}'
           ref: refs/head/main
           repo: example/example
           token: ${{ secrets.GH_TOKEN }}
