@@ -14,7 +14,7 @@ See [Usage](#usage) for full documentation.
 job:
   example:
     steps:
-      - use: pauldraper/workflow-dispatch@v1.1
+      - use: pauldraper/workflow-dispatch@v1.4
         with:
           inputs: '{"color": "blue"}'
           workflow: downstream.yml
@@ -34,7 +34,7 @@ on: [workflow_dispatch]
 job:
   example:
     steps:
-      - use: pauldraper/workflow-dispatch@v1.1
+      - use: pauldraper/workflow-dispatch@v1.4
         with:
           inputs: '{"color": "blue"}'
           ref: refs/head/main
@@ -58,7 +58,7 @@ on: [workflow_dispatch]
 job:
   example:
     steps:
-      - use: pauldraper/workflow-dispatch@v1.1
+      - use: pauldraper/workflow-dispatch@v1.4
         with:
           marker-input: upstream-url
           workflow: downstream.yml
