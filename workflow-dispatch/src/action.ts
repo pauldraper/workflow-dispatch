@@ -30,6 +30,15 @@ export function getJsonInput(name: string) {
   }
 }
 
+export function getRepoInput(name: string): { owner: string; repo: string } {
+  const text = getInput(name);
+  const match = text.match(/^([^/]+)\/([^/]+)$/);
+  if (!match) {
+    throw new ActionError(`Invalid GitHub repository`);
+  }
+  return { owner: match[1], repo: match[2] };
+}
+
 export function workflowRunAttemptUrl(
   server: string,
   owner: string,

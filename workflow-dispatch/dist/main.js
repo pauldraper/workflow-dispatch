@@ -16235,6 +16235,14 @@ function getJsonInput(name) {
         }
     }
 }
+function getRepoInput(name) {
+    const text = coreExports.getInput(name);
+    const match = text.match(/^([^/]+)\/([^/]+)$/);
+    if (!match) {
+        throw new ActionError(`Invalid GitHub repository`);
+    }
+    return { owner: match[1], repo: match[2] };
+}
 function workflowRunAttemptUrl(server, owner, repo, runId, runAttempt) {
     return `${workflowRunUrl(server, owner, repo, runId)}/attempts/${runAttempt}`;
 }
@@ -29896,12 +29904,11 @@ if (typeof crypto === "undefined") {
 async function main() {
     const inputs = getJsonInput("inputs");
     const markerInput = coreExports.getInput("marker-input");
-    const owner = coreExports.getInput("owner") || context.repo.owner;
-    const ref = coreExports.getInput("ref") || context.ref;
-    const repo = coreExports.getInput("repo") || context.repo.repo;
-    const token = coreExports.getInput("token", { required: true });
+    const ref = coreExports.getInput("ref");
+    const { owner, repo } = getRepoInput("repo");
+    const token = coreExports.getInput("token");
     const wait = getBooleanInput("wait");
-    const workflow = coreExports.getInput("workflow", { required: true });
+    const workflow = coreExports.getInput("workflow");
     const octokit = new Octokit({ auth: token });
     let dispatcher;
     if (markerInput) {

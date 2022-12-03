@@ -12,6 +12,7 @@ import {
   currentUrl,
   getBooleanInput,
   getJsonInput,
+  getRepoInput,
   workflowRunAttemptUrl,
 } from "./action";
 import { ActionError } from "./core";
@@ -30,12 +31,11 @@ if (typeof crypto === "undefined") {
 async function main() {
   const inputs = getJsonInput("inputs");
   const markerInput = getInput("marker-input");
-  const owner = getInput("owner") || context.repo.owner;
-  const ref = getInput("ref") || context.ref;
-  const repo = getInput("repo") || context.repo.repo;
-  const token = getInput("token", { required: true });
+  const ref = getInput("ref");
+  const { owner, repo } = getRepoInput("repo");
+  const token = getInput("token");
   const wait = getBooleanInput("wait");
-  const workflow = getInput("workflow", { required: true });
+  const workflow = getInput("workflow");
 
   const octokit = new Octokit({ auth: token });
 

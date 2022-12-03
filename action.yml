@@ -11,21 +11,22 @@ inputs:
   marker-input:
     description: Name of input for this workflow's URL
   repo:
-    description: Repository name
-  owner:
-    description: Owner name
+    default: ${{ github.repository }}
+    description: Repository owner and name
   ref:
+    default: ${{ github.ref }}
     description: Ref
   token:
+    default: ${{ github.token }}
     description:
       Personal access token, see
       https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-    required: true
   wait:
     default: "false"
     description: Whether to wait for
   workflow:
     description: Workflow file path
+    required: true
 outputs:
   conclusion:
     description: Conclusion of workflow run
