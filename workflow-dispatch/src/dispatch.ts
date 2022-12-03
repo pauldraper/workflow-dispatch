@@ -162,3 +162,26 @@ export class MarkerRunDispatcher implements RunDispatcher {
     return new MarkerRunFinder(this.octokit, this.stepName, params, created);
   }
 }
+
+export async function waitWorkflowRunAttempt(
+  octokit: Octokit,
+  owner: string,
+  repo: string,
+  runId: number,
+  attemptNumber: number
+): Promise<string> {
+  while (true) {
+    const response = await octokit.actions.getWorkflowRunAttempt({
+      attempt_number: attemptNumber,
+      owner,
+      repo,
+      run_id: runId,
+    });
+    if (response.data.conclusion !== null) {
+      return response.data.conclusion;
+    }
+    await new Promise((resolve) =>
+      setTimeout(resolve, Duration.ofSeconds(10).toMillis())
+    );
+  }
+}

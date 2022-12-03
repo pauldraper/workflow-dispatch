@@ -29,4 +29,4 @@ outputs:
     description: Workflow run ID
 runs:
   using: node16
-  main: workflow-dispatch/dist/index.js
+  main: workflow-dispatch/dist/main.js

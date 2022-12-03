@@ -1,5 +1,6 @@
-import { getInput, setFailed } from "@actions/core";
+import { getInput } from "@actions/core";
 import { context } from "@actions/github";
+import { ActionError } from "./core";
 
 export const extraGithubContext = {
   runAttempt: +process.env.GITHUB_RUN_ATTEMPT!,
@@ -13,7 +14,7 @@ export function getBooleanInput(name: string) {
     case "true":
       return true;
   }
-  setFailed(`Invalid boolean for ${name}`);
+  throw new ActionError(`Invalid boolean for ${name}`);
 }
 
 export function getJsonInput(name: string) {
@@ -22,7 +23,7 @@ export function getJsonInput(name: string) {
     return JSON.parse(text);
   } catch (e) {
     if (e instanceof SyntaxError) {
-      setFailed(`Invalid JSON for ${name}: ${e.message}`);
+      throw new ActionError(`Invalid JSON for ${name}: ${e.message}`);
     } else {
       throw e;
     }

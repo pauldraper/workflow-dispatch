@@ -7,21 +7,25 @@ import {
   warning,
 } from "@actions/core";
 import { context } from "@actions/github";
-import { Duration } from "@js-joda/core";
 import { Octokit } from "@octokit/rest";
 import {
   currentUrl,
   getBooleanInput,
   getJsonInput,
-  workflowRunUrl,
+  workflowRunAttemptUrl,
 } from "./action";
+import { ActionError } from "./core";
 import {
   MarkerRunDispatcher,
   NextRunDispatcher,
   RunDispatcher,
+  waitWorkflowRunAttempt,
 } from "./dispatch";
 
-class ActionError extends Error {}
+if (typeof crypto === "undefined") {
+  // https://github.com/uuidjs/uuid#getrandomvalues-not-supported
+  global.crypto = require("node:crypto").webcrypto;
+}
 
 async function main() {
   const inputs = getJsonInput("inputs");
@@ -59,39 +63,35 @@ async function main() {
     }
     return;
   }
-  const downstreamUrl = workflowRunUrl(context.serverUrl, owner, repo, runId);
+  const downstreamUrl = workflowRunAttemptUrl(
+    context.serverUrl,
+    owner,
+    repo,
+    runId,
+    1
+  );
   info(`Created workflow run ${downstreamUrl}`);
-  summary
+  await summary
     .addRaw(`Created workflow run [${downstreamUrl}](${downstreamUrl})`)
-    .addEOL();
+    .addEOL()
+    .write();
 
   setOutput("run_id", runId);
 
   if (wait) {
-    const conclusion = await waitWorkflowRun(octokit, owner, repo, runId);
-    setOutput("conclusion", conclusion);
-    info(`Conclusion: ${conclusion}`);
-  }
-}
-
-async function waitWorkflowRun(
-  octokit: Octokit,
-  owner: string,
-  repo: string,
-  runId: number
-): Promise<string> {
-  while (true) {
-    const response = await octokit.actions.getWorkflowRun({
+    const conclusion = await waitWorkflowRunAttempt(
+      octokit,
       owner,
       repo,
-      run_id: runId,
-    });
-    if (response.data.conclusion !== null) {
-      return response.data.conclusion;
-    }
-    await new Promise((resolve) =>
-      setTimeout(resolve, Duration.ofSeconds(10).toMillis())
+      runId,
+      1
     );
+    setOutput("conclusion", conclusion);
+    if (conclusion !== "success") {
+      setFailed(`Conclusion: ${conclusion}`);
+    } else {
+      info(`Conclusion: ${conclusion}`);
+    }
   }
 }
 
