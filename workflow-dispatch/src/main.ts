@@ -13,7 +13,7 @@ import {
   getBooleanInput,
   getJsonInput,
   getRepoInput,
-  workflowRunAttemptUrl,
+  workflowRunUrl,
 } from "./action";
 import { ActionError } from "./core";
 import {
@@ -46,6 +46,8 @@ async function main() {
     dispatcher = new NextRunDispatcher(octokit);
   }
 
+  let summary_ = summary;
+
   const runFinder = await dispatcher.start({
     owner,
     repo,
@@ -63,18 +65,14 @@ async function main() {
     }
     return;
   }
-  const downstreamUrl = workflowRunAttemptUrl(
-    context.serverUrl,
-    owner,
-    repo,
-    runId,
-    1
-  );
-  info(`Created workflow run ${downstreamUrl}`);
-  await summary
-    .addRaw(`Created workflow run [${downstreamUrl}](${downstreamUrl})`)
-    .addEOL()
-    .write();
+  const downstreamUrl = workflowRunUrl(context.serverUrl, owner, repo, runId);
+  info(`Started workflow run ${downstreamUrl}`);
+  summary_ = summary
+    .addHeading(context.action)
+    .addRaw(
+      `Started workflow run [${owner}/${repo}:${workflow}@${ref}](${downstreamUrl})`
+    )
+    .addEOL();
 
   setOutput("run_id", runId);
 
@@ -88,11 +86,14 @@ async function main() {
     );
     setOutput("conclusion", conclusion);
     if (conclusion !== "success") {
+      summary_ = summary_.addRaw(`Conclusion: ${conclusion}`);
       setFailed(`Conclusion: ${conclusion}`);
     } else {
       info(`Conclusion: ${conclusion}`);
     }
   }
+
+  await summary_.write();
 }
 
 main().catch((e) => {

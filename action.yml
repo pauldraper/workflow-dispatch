@@ -2,7 +2,8 @@ branding:
   color: green
   icon: play
 description:
-  Trigger other workflows, display a link, and optionally wait for the result.
+  🚀 Trigger other workflows, display a link, and optionally wait for the
+  result.
 name: Workflow Dispatch Plus
 inputs:
   inputs:
