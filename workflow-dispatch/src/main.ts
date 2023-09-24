@@ -68,7 +68,12 @@ async function main() {
   const downstreamUrl = workflowRunUrl(context.serverUrl, owner, repo, runId);
   info(`Started workflow run ${downstreamUrl}`);
   summary_ = summary
-    .addHeading(context.action)
+    .addHeading(
+      context.action === "__pauldraper_workflow-dispatch"
+        ? "Workflow Dispatch Plus"
+        : context.action
+    )
+    .addEOL()
     .addRaw(
       `Started workflow run [${owner}/${repo}:${workflow}@${ref}](${downstreamUrl})`
     )

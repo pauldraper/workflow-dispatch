@@ -29,7 +29,6 @@ js_gen(
 ts_library(
     name = "lib",
     srcs = glob(["src/**/*.ts"]),
-    compiler = "@better_rules_javascript//rules:tsc",
     config = "tsconfig.json",
     config_dep = ":tsconfig",
     root = ":root",

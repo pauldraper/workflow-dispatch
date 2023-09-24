@@ -1,4 +1,4 @@
-load("@better_rules_javascript//nodejs:rules.bzl", "nodejs_binary", "nodejs_install", "nodejs_modules_archive")
+load("@better_rules_javascript//nodejs:rules.bzl", "nodejs_binary", "nodejs_install", "nodejs_modules_package")
 load("@better_rules_javascript//npm:rules.bzl", "yarn_resolve")
 load(":npm.bzl", "ROOTS")
 
@@ -22,7 +22,7 @@ yarn_resolve(
     path = "/",
 )
 
-nodejs_modules_archive(
+nodejs_modules_package(
     name = "nodejs_modules",
     links = [
         "//tools/typescript:root",
@@ -33,5 +33,5 @@ nodejs_modules_archive(
 
 nodejs_install(
     name = "install",
-    archive = ":nodejs_modules",
+    src = ":nodejs_modules",
 )

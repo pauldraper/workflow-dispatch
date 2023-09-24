@@ -905,7 +905,7 @@ function checkBypass(reqUrl) {
 }
 proxy.checkBypass = checkBypass;
 
-var npm$3 = {exports: {}};
+var files$3 = {exports: {}};
 
 var tunnel = {};
 
@@ -1172,7 +1172,7 @@ tunnel.debug = debug; // for test
 
 (function (module) {
 	module.exports = tunnel;
-} (npm$3));
+} (files$3));
 
 (function (exports) {
 	/* eslint-disable @typescript-eslint/no-explicit-any */
@@ -1209,7 +1209,7 @@ tunnel.debug = debug; // for test
 	const http = __importStar(require$$0$2);
 	const https = __importStar(require$$1$1);
 	const pm = __importStar(proxy);
-	const tunnel = __importStar(npm$3.exports);
+	const tunnel = __importStar(files$3.exports);
 	var HttpCodes;
 	(function (HttpCodes) {
 	    HttpCodes[HttpCodes["OK"] = 200] = "OK";
@@ -2768,7 +2768,7 @@ function getUserAgent() {
     return "<environment undetectable>";
 }
 
-var npm$2 = {exports: {}};
+var files$2 = {exports: {}};
 
 var register_1 = register$1;
 
@@ -2921,11 +2921,11 @@ function Hook() {
 Hook.Singular = HookSingular.bind();
 Hook.Collection = HookCollection.bind();
 
-npm$2.exports = Hook;
+files$2.exports = Hook;
 // expose constructors as a named property for TypeScript
-npm$2.exports.Hook = Hook;
-npm$2.exports.Singular = Hook.Singular;
-var Collection = npm$2.exports.Collection = Hook.Collection;
+files$2.exports.Hook = Hook;
+files$2.exports.Singular = Hook.Singular;
+var Collection = files$2.exports.Collection = Hook.Collection;
 
 /*!
  * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
@@ -3336,7 +3336,7 @@ const DEFAULTS$1 = {
 
 const endpoint$1 = withDefaults$5(null, DEFAULTS$1);
 
-var npm$1 = {exports: {}};
+var files$1 = {exports: {}};
 
 /*! node-domexception. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
 
@@ -3353,7 +3353,7 @@ if (!globalThis.DOMException) {
   }
 }
 
-var npm = globalThis.DOMException;
+var files = globalThis.DOMException;
 
 var ponyfill_es2018 = {exports: {}};
 
@@ -7591,7 +7591,7 @@ function requireMultipartParserEa55d8f4 () {
 
 
 
-	var index = requireNpm();
+	var index = requireFiles();
 
 
 
@@ -8039,11 +8039,11 @@ function requireMultipartParserEa55d8f4 () {
 
 /* eslint-disable */
 
-var hasRequiredNpm;
+var hasRequiredFiles;
 
-function requireNpm () {
-	if (hasRequiredNpm) return npm$1.exports;
-	hasRequiredNpm = 1;
+function requireFiles () {
+	if (hasRequiredFiles) return files$1.exports;
+	hasRequiredFiles = 1;
 	(function (module, exports) {
 		exports = module.exports = fetch;
 
@@ -8059,7 +8059,7 @@ function requireNpm () {
 		var net = require$$0$4;
 		var fs = require$$0$1;
 		var path = require$$0$3;
-		var DOMException = npm;
+		var DOMException = files;
 
 		function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -10579,11 +10579,11 @@ function requireNpm () {
 		exports.isRedirect = isRedirect;
 		/* eslint-enable */
 		
-} (npm$1, npm$1.exports));
-	return npm$1.exports;
+} (files$1, files$1.exports));
+	return files$1.exports;
 }
 
-var npmExports = requireNpm();
+var filesExports = requireFiles();
 
 class Deprecation extends Error {
   constructor(message) {
@@ -10750,7 +10750,7 @@ function fetchWrapper$1(requestOptions) {
     let headers = {};
     let status;
     let url;
-    const fetch = (requestOptions.request && requestOptions.request.fetch) || npmExports;
+    const fetch = (requestOptions.request && requestOptions.request.fetch) || filesExports;
     return fetch(requestOptions.url, Object.assign({
         method: requestOptions.method,
         body: requestOptions.body,
@@ -13821,7 +13821,7 @@ function fetchWrapper(requestOptions) {
     let url;
     const fetch = (requestOptions.request && requestOptions.request.fetch) ||
         globalThis.fetch ||
-        /* istanbul ignore next */ npmExports;
+        /* istanbul ignore next */ filesExports;
     return fetch(requestOptions.url, Object.assign({
         method: requestOptions.method,
         body: requestOptions.body,
@@ -29939,7 +29939,10 @@ async function main() {
     const downstreamUrl = workflowRunUrl(context.serverUrl, owner, repo, runId);
     coreExports.info(`Started workflow run ${downstreamUrl}`);
     summary_ = coreExports.summary
-        .addHeading(context.action)
+        .addHeading(context.action === "__pauldraper_workflow-dispatch"
+        ? "Workflow Dispatch Plus"
+        : context.action)
+        .addEOL()
         .addRaw(`Started workflow run [${owner}/${repo}:${workflow}@${ref}](${downstreamUrl})`)
         .addEOL();
     coreExports.setOutput("run_id", runId);

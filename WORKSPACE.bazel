@@ -65,11 +65,11 @@ gazelle_dependencies(go_repository_default_config = "@//:WORKSPACE.bazel")
 
 # Javascript
 
-JAVASCRIPT_VERSION = "64f6da098abe8512aaee105b0cb43119289307aa"
+JAVASCRIPT_VERSION = "a1f58fec303e7a3336713dc2157669c3b490dde8"
 
 http_archive(
     name = "better_rules_javascript",
-    sha256 = "aabb113c72cca3821e0a56b55e8a0408c08610920d4369581bc2cfafe2fb82cf",
+    sha256 = "05378c7b9f243e9e4f4c009749b15d750efafbcb94fae8ef5aed17e69131e63f",
     strip_prefix = "rules_javascript-%s" % JAVASCRIPT_VERSION,
     url = "https://github.com/hello-seer/rules_javascript/archive/%s.tar.gz" % JAVASCRIPT_VERSION,
 )
@@ -81,13 +81,13 @@ javascript_repositories(version = "17.9.1")
 
 # Pkg
 
-PKG_VERSION = "8e65d2f3ceaad684bf5aa85b80b9f100d63dc9c2"
+PKG_VERSION = "9a5be9b884814ca1d9f5acbd710c22dea0119a7f"
 
 http_archive(
     name = "rules_pkg",
-    sha256 = "be3f1298b0a49d2836aea56822098257e72f514819e8c56979134b8cdba18ca9",
+    sha256 = "d21285a01aa26935a965dbc0e7f4b5447335b2527a64b085edd6254b061b452f",
     strip_prefix = "rules_pkg-%s" % PKG_VERSION,
-    url = "https://github.com/bazelbuild/rules_pkg/archive/%s.zip" % PKG_VERSION,
+    url = "https://github.com/bazelbuild/rules_pkg/archive/%s.tar.gz" % PKG_VERSION,
 )
 
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
@@ -109,11 +109,11 @@ protobuf_deps()
 
 # Files
 
-FILE_VERSION = "5411fc1cf9eaa3889bcfafcc773cca66fffe9ea9"
+FILE_VERSION = "7e07245edcc54d419a52d141b3c8e86e3dc0d5c5"
 
 http_archive(
     name = "rules_file",
-    sha256 = "58947770df93aed2614b7b9ac8e55913ee4208b4b184d60fec436bc9cf8d0135",
+    sha256 = "ee31f2ebcd09e289090420012d19ffaecb71c005e74f511301f1fd47cbd5f971",
     strip_prefix = "rules_file-%s" % FILE_VERSION,
     url = "https://github.com/hello-seer/rules_file/archive/%s.zip" % FILE_VERSION,
 )

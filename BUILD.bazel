@@ -14,11 +14,6 @@ alias(
 )
 
 alias(
-    name = "lint",
-    actual = "//tools/lint",
-)
-
-alias(
     name = "format",
     actual = "//tools/lint:format",
 )
@@ -26,13 +21,7 @@ alias(
 # TODO: remove once better_rules_javascript makes this unnecessary
 cjs_root(
     name = "root",
-    package_name = "@helloseer/seer",
-)
-
-js_library(
-    name = "eslint_config",
-    srcs = [".eslintrc.js"],
-    root = ":root",
+    package_name = "@pauldraper/workflow-dispatch",
 )
 
 js_library(
