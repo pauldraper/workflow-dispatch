@@ -112,7 +112,7 @@ The Github API does not provide a direct association between a workflow dispatch
 and the subsequent workflow run. For greater robustness in determining the
 relationship, the upstream URL can be used as an input. The downstream workflow
 must use that value as the name of a step, so that the action can find it. (See
-[example](#marker-step-1).)
+[example](#marker-step).)
 
 ### Token
 
