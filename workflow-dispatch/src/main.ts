@@ -71,11 +71,11 @@ async function main() {
     .addHeading(
       context.action === "__pauldraper_workflow-dispatch"
         ? "Workflow Dispatch Plus"
-        : context.action
+        : context.action,
     )
     .addEOL()
     .addRaw(
-      `Started workflow run [${owner}/${repo}:${workflow}@${ref}](${downstreamUrl})`
+      `Started workflow run [${owner}/${repo}:${workflow}@${ref}](${downstreamUrl})`,
     )
     .addEOL();
 
@@ -87,7 +87,7 @@ async function main() {
       owner,
       repo,
       runId,
-      1
+      1,
     );
     setOutput("conclusion", conclusion);
     if (conclusion !== "success") {

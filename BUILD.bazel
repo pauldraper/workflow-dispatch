@@ -28,4 +28,7 @@ js_library(
     name = "prettier_config",
     srcs = [".prettierrc.yml"],
     root = ":root",
+    deps = [
+        "@npm//prettier-plugin-organize-imports:lib",
+    ],
 )

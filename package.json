@@ -1,17 +1,17 @@
 {
   "devDependencies": {
-    "@actions/core": "^1.0.0",
-    "@actions/github": "^5.0.0",
-    "@js-joda/core": "^5.0.0",
-    "@octokit/rest": "^19.0.0",
-    "@rollup/plugin-commonjs": "^23.0.0",
-    "@rollup/plugin-json": "^5.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@types/node": "^18.0.0",
-    "prettier": "^2.0.0",
-    "prettier-plugin-organize-imports": "^3.0.0",
-    "rollup": "^3.0.0",
-    "typescript": "^4.0.0"
+    "@actions/core": "^2",
+    "@actions/github": "^6",
+    "@js-joda/core": "^5",
+    "@octokit/rest": "^22",
+    "@rollup/plugin-commonjs": "^29",
+    "@rollup/plugin-json": "^6",
+    "@rollup/plugin-node-resolve": "^16",
+    "@types/node": "^24",
+    "prettier": "^3",
+    "prettier-plugin-organize-imports": "^4",
+    "rollup": "^4",
+    "typescript": "^5"
   },
   "resolutions": {
     "node-fetch": "npm:node-fetch-commonjs@^3.0.0"

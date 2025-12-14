@@ -13,7 +13,15 @@ sync --disk_cache ~/.cache/bazel-disk
 build -k
 
 # Run
-build --run_under='cd "$BUILD_WORKING_DIRECTORY" && exec'
+build --run_in_cwd
+
+# Workspace
+common --enable_workspace
+common --noenable_bzlmod
+
+# Python
+build --noexperimental_python_import_all_repositories
+build --incompatible_default_to_explicit_init_py
 
 # User settings
 try-import %workspace%/user.bazelrc

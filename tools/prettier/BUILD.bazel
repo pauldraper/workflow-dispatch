@@ -7,5 +7,4 @@ configure_prettier(
     config = ".prettierrc.yml",
     config_dep = "//:prettier_config",
     dep = "@npm//prettier:lib",
-    plugins = ["@npm//prettier-plugin-organize-imports:lib"],
 )

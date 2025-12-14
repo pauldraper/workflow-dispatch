@@ -1,3 +1,4 @@
 {
-  "extends": "@pauldraper/workflow-dispatch-typescript/tsconfig.common.json"
+  "extends": "@pauldraper/workflow-dispatch-typescript/tsconfig.common.json",
+  "compilerOptions": { "skipLibCheck": true }
 }

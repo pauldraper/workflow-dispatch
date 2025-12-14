@@ -26,7 +26,7 @@ class NextRunFinder implements RunFinder {
     private readonly octokit: Octokit,
     private readonly params: RunDispatcher.Params,
     private readonly created: Instant,
-    private readonly prevRunNumber: number | undefined
+    private readonly prevRunNumber: number | undefined,
   ) {}
 
   async find() {
@@ -55,7 +55,7 @@ class NextRunFinder implements RunFinder {
         }
       }
       await new Promise((resolve) =>
-        setTimeout(resolve, Duration.ofSeconds(1).toMillis())
+        setTimeout(resolve, Duration.ofSeconds(1).toMillis()),
       );
     }
   }
@@ -92,7 +92,7 @@ class MarkerRunFinder implements RunFinder {
     private readonly octokit: Octokit,
     private readonly stepName: string,
     private readonly params: RunDispatcher.Params,
-    private readonly created: Instant
+    private readonly created: Instant,
   ) {}
 
   async find() {
@@ -135,7 +135,7 @@ class MarkerRunFinder implements RunFinder {
         }
       }
       await new Promise((resolve) =>
-        setTimeout(resolve, Duration.ofSeconds(1).toMillis())
+        setTimeout(resolve, Duration.ofSeconds(1).toMillis()),
       );
     }
   }
@@ -145,7 +145,7 @@ export class MarkerRunDispatcher implements RunDispatcher {
   constructor(
     private readonly octokit: Octokit,
     private readonly inputName: string,
-    private readonly stepName: string
+    private readonly stepName: string,
   ) {}
 
   async start(params: RunDispatcher.Params) {
@@ -168,7 +168,7 @@ export async function waitWorkflowRunAttempt(
   owner: string,
   repo: string,
   runId: number,
-  attemptNumber: number
+  attemptNumber: number,
 ): Promise<string> {
   while (true) {
     const response = await octokit.actions.getWorkflowRunAttempt({
@@ -181,7 +181,7 @@ export async function waitWorkflowRunAttempt(
       return response.data.conclusion;
     }
     await new Promise((resolve) =>
-      setTimeout(resolve, Duration.ofSeconds(10).toMillis())
+      setTimeout(resolve, Duration.ofSeconds(10).toMillis()),
     );
   }
 }

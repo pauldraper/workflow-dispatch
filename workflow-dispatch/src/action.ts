@@ -44,7 +44,7 @@ export function workflowRunAttemptUrl(
   owner: string,
   repo: string,
   runId: number,
-  runAttempt: number
+  runAttempt: number,
 ): string {
   return `${workflowRunUrl(server, owner, repo, runId)}/attempts/${runAttempt}`;
 }
@@ -53,7 +53,7 @@ export function workflowRunUrl(
   server: string,
   owner: string,
   repo: string,
-  runId: number
+  runId: number,
 ) {
   return `${server}/${owner}/${repo}/actions/runs/${runId}`;
 }
@@ -64,6 +64,6 @@ export function currentUrl() {
     context.repo.owner,
     context.repo.repo,
     context.runId,
-    extraGithubContext.runAttempt
+    extraGithubContext.runAttempt,
   );
 }

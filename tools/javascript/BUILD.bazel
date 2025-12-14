@@ -9,13 +9,6 @@ alias(
     actual = "@better_rules_javascript//rules:nodejs",
 )
 
-nodejs_binary(
-    name = "pino_pretty",
-    dep = "@npm//pino-pretty:lib",
-    main = "bin.js",
-    node = ":nodejs",
-)
-
 yarn_resolve(
     name = "resolve",
     output = "npm.bzl",
