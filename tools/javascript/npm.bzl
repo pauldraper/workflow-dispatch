@@ -78,11 +78,6 @@ PACKAGES = {
         "name": "@jridgewell/sourcemap-codec",
         "url": "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz",
     },
-    "@js-joda/core@5.6.5": {
-        "integrity": "sha512-3zwefSMwHpu8iVUW8YYz227sIv6UFqO31p1Bf1ZH/Vom7CmNyUsXjDBlnNzcuhmOL1XfxZ3nvND42kR23XlbcQ==",
-        "name": "@js-joda/core",
-        "url": "https://registry.npmjs.org/@js-joda/core/-/core-5.6.5.tgz",
-    },
     "@npmcli/agent@4.0.0": {
         "deps": [
             {"id": "agent-base@7.1.4"},
@@ -316,15 +311,6 @@ PACKAGES = {
         "integrity": "sha512-U2YHaxR2cU/yAiwKJtJRhnyLk7cifnQw0zUpISsocBDoHDJn+HTV74ABqnwr5bEgWUwFZC9oFL6wLe21lHu5eQ==",
         "name": "@rollup/plugin-commonjs",
         "url": "https://registry.npmjs.org/@rollup/plugin-commonjs/-/plugin-commonjs-29.0.0.tgz",
-    },
-    "@rollup/plugin-json@6.1.0-dc3fc578": {
-        "deps": [
-            {"id": "@rollup/pluginutils@5.3.0-1b456630"},
-            {"id": "rollup@4.53.3"},
-        ],
-        "integrity": "sha512-EGI2te5ENk1coGeADSIwZ7G2Q8CJS2sF120T7jLw4xFw9n7wIOXHo+kIYRAoVpJAN+kmqZSoO3Fp4JtoNF4ReA==",
-        "name": "@rollup/plugin-json",
-        "url": "https://registry.npmjs.org/@rollup/plugin-json/-/plugin-json-6.1.0.tgz",
     },
     "@rollup/plugin-node-resolve@16.0.3-dc3fc578": {
         "deps": [
@@ -1013,6 +999,17 @@ PACKAGES = {
         "name": "tar",
         "url": "https://registry.npmjs.org/tar/-/tar-7.5.2.tgz",
     },
+    "temporal-polyfill@0.3.0": {
+        "deps": [{"id": "temporal-spec@0.3.0"}],
+        "integrity": "sha512-qNsTkX9K8hi+FHDfHmf22e/OGuXmfBm9RqNismxBrnSmZVJKegQ+HYYXT+R7Ha8F/YSm2Y34vmzD4cxMu2u95g==",
+        "name": "temporal-polyfill",
+        "url": "https://registry.npmjs.org/temporal-polyfill/-/temporal-polyfill-0.3.0.tgz",
+    },
+    "temporal-spec@0.3.0": {
+        "integrity": "sha512-n+noVpIqz4hYgFSMOSiINNOUOMFtV5cZQNCmmszA6GiVFVRt3G7AqVyhXjhCSmowvQn+NsGn+jMDMKJYHd3bSQ==",
+        "name": "temporal-spec",
+        "url": "https://registry.npmjs.org/temporal-spec/-/temporal-spec-0.3.0.tgz",
+    },
     "tinyglobby@0.2.15": {
         "deps": [
             {"id": "fdir@6.5.0-0e783aad"},
@@ -1098,20 +1095,12 @@ ROOTS = [
         "name": "@actions/github",
     },
     {
-        "id": "@js-joda/core@5.6.5",
-        "name": "@js-joda/core",
-    },
-    {
         "id": "@octokit/rest@22.0.1",
         "name": "@octokit/rest",
     },
     {
         "id": "@rollup/plugin-commonjs@29.0.0-dc3fc578",
         "name": "@rollup/plugin-commonjs",
-    },
-    {
-        "id": "@rollup/plugin-json@6.1.0-dc3fc578",
-        "name": "@rollup/plugin-json",
     },
     {
         "id": "@rollup/plugin-node-resolve@16.0.3-dc3fc578",
@@ -1132,6 +1121,10 @@ ROOTS = [
     {
         "id": "rollup@4.53.3",
         "name": "rollup",
+    },
+    {
+        "id": "temporal-polyfill@0.3.0",
+        "name": "temporal-polyfill",
     },
     {
         "id": "typescript@5.9.3-d305d436",

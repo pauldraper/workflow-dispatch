@@ -105,13 +105,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@js-joda/core@npm:^5":
-  version: 5.6.5
-  resolution: "@js-joda/core@npm:5.6.5"
-  checksum: 6b586e9bd00a2e5e2fb04dc1709ac00803205a2c00ba596161cce715b12a94a556415c6645bf86e65579f3cfdf6c694edbd186761c17d2170f5a3ed929f61816
-  languageName: node
-  linkType: hard
-
 "@npmcli/agent@npm:^4.0.0":
   version: 4.0.0
   resolution: "@npmcli/agent@npm:4.0.0"
@@ -398,20 +391,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-json@npm:^6":
-  version: 6.1.0
-  resolution: "@rollup/plugin-json@npm:6.1.0"
-  dependencies:
-    "@rollup/pluginutils": ^5.1.0
-  peerDependencies:
-    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: cc018d20c80242a2b8b44fae61a968049cf31bb8406218187cc7cda35747616594e79452dd65722e7da6dd825b392e90d4599d43cd4461a02fefa2865945164e
-  languageName: node
-  linkType: hard
-
 "@rollup/plugin-node-resolve@npm:^16":
   version: 16.0.3
   resolution: "@rollup/plugin-node-resolve@npm:16.0.3"
@@ -430,7 +409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^5.0.1, @rollup/pluginutils@npm:^5.1.0":
+"@rollup/pluginutils@npm:^5.0.1":
   version: 5.3.0
   resolution: "@rollup/pluginutils@npm:5.3.0"
   dependencies:
@@ -1275,15 +1254,14 @@ __metadata:
   dependencies:
     "@actions/core": ^2
     "@actions/github": ^6
-    "@js-joda/core": ^5
     "@octokit/rest": ^22
     "@rollup/plugin-commonjs": ^29
-    "@rollup/plugin-json": ^6
     "@rollup/plugin-node-resolve": ^16
     "@types/node": ^24
     prettier: ^3
     prettier-plugin-organize-imports: ^4
     rollup: ^4
+    temporal-polyfill: ^0.3
     typescript: ^5
   languageName: unknown
   linkType: soft
@@ -1358,6 +1336,22 @@ __metadata:
     minizlib: ^3.1.0
     yallist: ^5.0.0
   checksum: 192559b0e7af17d57c7747592ef22c14d5eba2d9c35996320ccd20c3e2038160fe8d928fc5c08b2aa1b170c4d0a18c119441e81eae8f227ca2028d5bcaa6bf23
+  languageName: node
+  linkType: hard
+
+"temporal-polyfill@npm:^0.3":
+  version: 0.3.0
+  resolution: "temporal-polyfill@npm:0.3.0"
+  dependencies:
+    temporal-spec: 0.3.0
+  checksum: ec08f2515dd340023424d768557ed8f7c53951c87eb6053544ab4ef39eabde5262eff3085e7c506b7db7a57400601cd698b83a5375379ce84f13bd5d4977b21a
+  languageName: node
+  linkType: hard
+
+"temporal-spec@npm:0.3.0":
+  version: 0.3.0
+  resolution: "temporal-spec@npm:0.3.0"
+  checksum: 6e154023f66094a1c7817ed438806920b455a4df7ddd299192bb314f93506d972cfb77bbb8ff5bc4ff06211b2d22bb3c66a3ac2c09487ccc35939e873fdd957c
   languageName: node
   linkType: hard
 

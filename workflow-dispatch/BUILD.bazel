@@ -35,9 +35,9 @@ ts_library(
     deps = [
         "@npm//@actions/core:lib",
         "@npm//@actions/github:lib",
-        "@npm//@js-joda/core:lib",
         "@npm//@octokit/rest:lib",
         "@npm//@types/node:lib",
+        "@npm//temporal-polyfill:lib",
     ],
 )
 
@@ -54,7 +54,6 @@ js_library(
     root = ":root",
     deps = [
         "@npm//@rollup/plugin-commonjs:lib",
-        "@npm//@rollup/plugin-json:lib",
         "@npm//@rollup/plugin-node-resolve:lib",
     ],
 )

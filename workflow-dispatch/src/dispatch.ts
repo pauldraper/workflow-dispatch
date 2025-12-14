@@ -1,7 +1,6 @@
-import { ChronoUnit, Duration, Instant } from "@js-joda/core";
 import { Octokit } from "@octokit/rest";
 
-const CLOCK_DRIFT = Duration.ofMinutes(1);
+const CLOCK_DRIFT = Temporal.Duration.from({ minutes: 1 });
 
 export interface RunDispatcher {
   start(params: RunDispatcher.Params): Promise<RunFinder>;
@@ -25,17 +24,17 @@ class NextRunFinder implements RunFinder {
   constructor(
     private readonly octokit: Octokit,
     private readonly params: RunDispatcher.Params,
-    private readonly created: Instant,
+    private readonly created: Temporal.Instant,
     private readonly prevRunNumber: number | undefined,
   ) {}
 
   async find() {
     const minCreated = this.created
-      .minus(CLOCK_DRIFT)
-      .truncatedTo(ChronoUnit.SECONDS);
+      .subtract(CLOCK_DRIFT)
+      .round({ smallestUnit: "second", roundingMode: "floor" });
     const maxCreated = this.created
-      .plus(CLOCK_DRIFT)
-      .truncatedTo(ChronoUnit.SECONDS);
+      .subtract(CLOCK_DRIFT)
+      .round({ smallestUnit: "second", roundingMode: "ceil" });
     for (let i = 0; i < 30; i++) {
       const response = await this.octokit.actions.listWorkflowRuns({
         created: `${minCreated}..${maxCreated}`,
@@ -55,7 +54,10 @@ class NextRunFinder implements RunFinder {
         }
       }
       await new Promise((resolve) =>
-        setTimeout(resolve, Duration.ofSeconds(1).toMillis()),
+        setTimeout(
+          resolve,
+          Temporal.Duration.from({ seconds: 1 }).total("milliseconds"),
+        ),
       );
     }
   }
@@ -65,7 +67,7 @@ export class NextRunDispatcher implements RunDispatcher {
   constructor(private readonly octokit: Octokit) {}
 
   async start(params: RunDispatcher.Params) {
-    const created = Instant.now();
+    const created = Temporal.Now.instant();
     const response = await this.octokit.actions.listWorkflowRuns({
       owner: params.owner,
       ref: params.ref,
@@ -92,16 +94,16 @@ class MarkerRunFinder implements RunFinder {
     private readonly octokit: Octokit,
     private readonly stepName: string,
     private readonly params: RunDispatcher.Params,
-    private readonly created: Instant,
+    private readonly created: Temporal.Instant,
   ) {}
 
   async find() {
     const minCreated = this.created
-      .minus(CLOCK_DRIFT)
-      .truncatedTo(ChronoUnit.SECONDS);
+      .subtract(CLOCK_DRIFT)
+      .round({ smallestUnit: "second", roundingMode: "floor" });
     const maxCreated = this.created
-      .plus(CLOCK_DRIFT)
-      .truncatedTo(ChronoUnit.SECONDS);
+      .subtract(CLOCK_DRIFT)
+      .round({ smallestUnit: "second", roundingMode: "ceil" });
     for (let i = 0; i < 30; i++) {
       const response = await this.octokit.actions.listWorkflowRuns({
         created: `${minCreated}..${maxCreated}`,
@@ -135,7 +137,10 @@ class MarkerRunFinder implements RunFinder {
         }
       }
       await new Promise((resolve) =>
-        setTimeout(resolve, Duration.ofSeconds(1).toMillis()),
+        setTimeout(
+          resolve,
+          Temporal.Duration.from({ seconds: 1 }).total("milliseconds"),
+        ),
       );
     }
   }
@@ -149,7 +154,7 @@ export class MarkerRunDispatcher implements RunDispatcher {
   ) {}
 
   async start(params: RunDispatcher.Params) {
-    const created = Instant.now();
+    const created = Temporal.Now.instant();
 
     await this.octokit.actions.createWorkflowDispatch({
       owner: params.owner,
@@ -181,7 +186,10 @@ export async function waitWorkflowRunAttempt(
       return response.data.conclusion;
     }
     await new Promise((resolve) =>
-      setTimeout(resolve, Duration.ofSeconds(10).toMillis()),
+      setTimeout(
+        resolve,
+        Temporal.Duration.from({ seconds: 10 }).total("milliseconds"),
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import "temporal-polyfill/global";
+
 import {
   getInput,
   info,
@@ -69,7 +71,7 @@ async function main() {
   info(`Started workflow run ${downstreamUrl}`);
   summary_ = summary
     .addHeading(
-      context.action === "__pauldraper_workflow-dispatch"
+      context.action.startsWith("__run")
         ? "Workflow Dispatch Plus"
         : context.action,
     )

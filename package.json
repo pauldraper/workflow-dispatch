@@ -2,18 +2,14 @@
   "devDependencies": {
     "@actions/core": "^2",
     "@actions/github": "^6",
-    "@js-joda/core": "^5",
     "@octokit/rest": "^22",
     "@rollup/plugin-commonjs": "^29",
-    "@rollup/plugin-json": "^6",
     "@rollup/plugin-node-resolve": "^16",
     "@types/node": "^24",
     "prettier": "^3",
     "prettier-plugin-organize-imports": "^4",
     "rollup": "^4",
+    "temporal-polyfill": "^0.3",
     "typescript": "^5"
-  },
-  "resolutions": {
-    "node-fetch": "npm:node-fetch-commonjs@^3.0.0"
   }
 }
